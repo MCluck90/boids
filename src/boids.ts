@@ -1,3 +1,4 @@
+import { canvas } from './canvas'
 import { Boid } from './types'
 import { Vector } from './vector'
 
@@ -15,7 +16,9 @@ export function moveBoids(
   speed: number,
   separation: number,
   alignment: number,
-  cohesion: number
+  cohesion: number,
+  jitter: number,
+  allowWrapping: boolean
 ) {
   const centerSum = boids.reduce((acc, boid) => {
     acc.x += boid.position.x
@@ -27,8 +30,8 @@ export function moveBoids(
     // Rule 1: Boids try to fly towards the center of mass of neighboring boids
     // Exclude current boid from supposed center
     const center = new Vector(
-      (centerSum.x - boid.position.x) / (boids.length - 1),
-      (centerSum.y - boid.position.y) / (boids.length - 1)
+      (centerSum.x - boid.position.x) / Math.max(boids.length - 1, 1),
+      (centerSum.y - boid.position.y) / Math.max(boids.length - 1, 1)
     )
 
     const v1 = new Vector(
@@ -46,6 +49,21 @@ export function moveBoids(
       if (boid.position.distanceTo(other.position) < separation) {
         v2 = v2.subtract(other.position.subtract(boid.position))
       }
+
+      if (allowWrapping) {
+        continue
+      }
+
+      if (boid.position.x < 10) {
+        v2 = v2.subtract(new Vector(-10, 0))
+      } else if (boid.position.x > canvas.width - 10) {
+        v2 = v2.subtract(new Vector(10, 0))
+      }
+      if (boid.position.y < 10) {
+        v2 = v2.subtract(new Vector(0, -10))
+      } else if (boid.position.y > canvas.height - 10) {
+        v2 = v2.subtract(new Vector(0, 10))
+      }
     }
 
     // Rule 3: Boids try to match velocity with near boids
@@ -57,9 +75,21 @@ export function moveBoids(
 
       v3 = v3.add(other.velocity.mult(alignment))
     }
-    v3 = v3.div(boids.length - 1)
+    v3 = v3.div(Math.max(boids.length - 1, 1))
 
-    boid.velocity = boid.velocity.add(v1).add(v2).add(v3).toUnit()
+    const direction = Math.atan2(boid.velocity.y, boid.velocity.x)
+    const newDirection =
+      direction + Math.PI * (jitter * Math.random() * (Math.random() - 0.5))
+    const jitterVector = new Vector(
+      Math.cos(newDirection),
+      Math.sin(newDirection)
+    ).toUnit()
+    boid.velocity = boid.velocity
+      .add(v1)
+      .add(v2)
+      .add(v3)
+      .add(jitterVector)
+      .toUnit()
     boid.position = boid.position.add(boid.velocity.mult(speed))
   }
 }

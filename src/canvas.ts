@@ -23,27 +23,26 @@ function rotatePoint(point: Point, center: Point, angle: number) {
   point.y = yNew + center.y
 }
 
-export const drawBoid = (boid: Boid) => {
+export const drawBoid = (boid: Boid, size: number, color = '#ffffff') => {
   const direction = Math.atan2(boid.velocity.y, boid.velocity.x)
-  const length = 10
   const tip = {
-    x: boid.position.x + length,
+    x: boid.position.x + size,
     y: boid.position.y,
   }
   const leftTail = {
-    x: boid.position.x - length / 2,
-    y: boid.position.y - length / 2,
+    x: boid.position.x - size / 2,
+    y: boid.position.y - size / 2,
   }
   const rightTail = {
-    x: boid.position.x - length / 2,
-    y: boid.position.y + length / 2,
+    x: boid.position.x - size / 2,
+    y: boid.position.y + size / 2,
   }
   rotatePoint(tip, boid.position, direction)
   rotatePoint(leftTail, boid.position, direction)
   rotatePoint(rightTail, boid.position, direction)
 
-  ctx.strokeStyle = 'white'
-  ctx.fillStyle = 'white'
+  ctx.strokeStyle = color
+  ctx.fillStyle = color
   ctx.lineWidth = 2
   ctx.beginPath()
   ctx.moveTo(tip.x, tip.y)
