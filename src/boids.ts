@@ -10,7 +10,13 @@ export const createBoid = (x: number, y: number): Boid => {
   }
 }
 
-export function moveBoids(boids: Boid[], speed: number) {
+export function moveBoids(
+  boids: Boid[],
+  speed: number,
+  separation: number,
+  alignment: number,
+  cohesion: number
+) {
   const centerSum = boids.reduce((acc, boid) => {
     acc.x += boid.position.x
     acc.y += boid.position.y
@@ -26,8 +32,8 @@ export function moveBoids(boids: Boid[], speed: number) {
     )
 
     const v1 = new Vector(
-      (center.x - boid.position.x) / 100,
-      (center.y - boid.position.y) / 100
+      ((center.x - boid.position.x) / 100) * cohesion,
+      ((center.y - boid.position.y) / 100) * cohesion
     )
 
     // Rule 2: Boids try to keep a small distance away from other objects (including other boids)
@@ -37,7 +43,7 @@ export function moveBoids(boids: Boid[], speed: number) {
         continue
       }
 
-      if (boid.position.distanceTo(other.position) < 100) {
+      if (boid.position.distanceTo(other.position) < separation) {
         v2 = v2.subtract(other.position.subtract(boid.position))
       }
     }
@@ -49,7 +55,7 @@ export function moveBoids(boids: Boid[], speed: number) {
         continue
       }
 
-      v3 = v3.add(other.velocity)
+      v3 = v3.add(other.velocity.mult(alignment))
     }
     v3 = v3.div(boids.length - 1)
 

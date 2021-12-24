@@ -42,6 +42,8 @@ export const drawBoid = (boid: Boid) => {
   rotatePoint(leftTail, boid.position, direction)
   rotatePoint(rightTail, boid.position, direction)
 
+  ctx.strokeStyle = 'white'
+  ctx.lineWidth = 2
   ctx.beginPath()
   ctx.moveTo(tip.x, tip.y)
   ctx.lineTo(leftTail.x, leftTail.y)
@@ -49,4 +51,5 @@ export const drawBoid = (boid: Boid) => {
   ctx.lineTo(tip.x, tip.y)
   ctx.closePath()
   ctx.stroke()
+  ctx.fill()
 }

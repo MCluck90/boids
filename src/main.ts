@@ -3,19 +3,25 @@ import { ctx, drawBoid, canvas } from './canvas'
 import { Boid } from './types'
 
 const speedEl = document.getElementById('speed')! as HTMLInputElement
+const separationEl = document.getElementById('separation')! as HTMLInputElement
+const alignmentEl = document.getElementById('alignment')! as HTMLInputElement
+const cohesionEl = document.getElementById('cohesion')! as HTMLInputElement
 
-const boids: Boid[] = [
-  createBoid(80, 80),
-  createBoid(80, 100),
-  createBoid(100, 100),
-  createBoid(120, 100),
-  createBoid(120, 120),
-]
+const boids: Boid[] = []
+
+for (let i = 0; i < 50; i++) {
+  boids.push(
+    createBoid(Math.random() * canvas.width, Math.random() * canvas.height)
+  )
+}
 
 function update(delta: number) {
   const speed = Number(speedEl.value)
+  const separation = Number(separationEl.value)
+  const alignment = Number(alignmentEl.value) / 100
+  const cohesion = Number(cohesionEl.value) / 100
 
-  moveBoids(boids, speed * delta)
+  moveBoids(boids, speed * delta, separation, alignment, cohesion)
 
   // Wrap around the screen
   for (const boid of boids) {
