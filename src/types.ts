@@ -6,6 +6,7 @@ export interface Point {
 }
 
 export interface Boid {
+  id: string
   position: Vector
   velocity: Vector
 }

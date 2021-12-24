@@ -38,4 +38,8 @@ export class Vector implements Point {
   div(n: number) {
     return new Vector(this.x / n, this.y / n)
   }
+
+  clone() {
+    return new Vector(this.x, this.y)
+  }
 }

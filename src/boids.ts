@@ -2,12 +2,27 @@ import { canvas } from './canvas'
 import { Boid } from './types'
 import { Vector } from './vector'
 
+function uuidv4() {
+  return ([1e7].toString() + -1e3 + -4e3 + -8e3 + -1e11).replace(
+    /[018]/g,
+    (c) =>
+      (
+        Number(c) ^
+        (crypto.getRandomValues(new Uint8Array(1))[0] & (15 >> (Number(c) / 4)))
+      ).toString(16)
+  )
+}
+
 export const createBoid = (x: number, y: number): Boid => {
   const degrees = Math.random() * 360
   const radians = degrees * (Math.PI / 180)
+  const position = new Vector(x, y)
+  const velocity = new Vector(Math.cos(radians), Math.sin(radians))
+
   return {
-    position: new Vector(x, y),
-    velocity: new Vector(Math.cos(radians), Math.sin(radians)),
+    id: uuidv4(),
+    position,
+    velocity,
   }
 }
 
@@ -84,6 +99,7 @@ export function moveBoids(
       Math.cos(newDirection),
       Math.sin(newDirection)
     ).toUnit()
+
     boid.velocity = boid.velocity
       .add(v1)
       .add(v2)

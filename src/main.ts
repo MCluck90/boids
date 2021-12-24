@@ -53,6 +53,7 @@ function update(delta: number) {
   if (!allowWrapping) {
     return
   }
+
   for (const boid of boids) {
     if (boid.position.x <= 0) {
       boid.position.x = canvas.width + boid.position.x
@@ -71,10 +72,11 @@ function update(delta: number) {
 function render() {
   const size = Number(sizeEl.value)
   const color = colorEl.value
+  const allowWrapping = !!allowWrappingEl.checked
   ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height)
 
   for (const boid of boids) {
-    drawBoid(boid, size, color)
+    drawBoid(boid, size, color, allowWrapping)
   }
 }
 
