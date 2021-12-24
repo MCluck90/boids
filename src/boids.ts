@@ -54,42 +54,35 @@ export function moveBoids(
       ((center.y - boid.position.y) / 100) * cohesion
     )
 
-    // Rule 2: Boids try to keep a small distance away from other objects (including other boids)
     let v2 = new Vector()
-    for (const other of boids) {
-      if (other === boid) {
-        continue
-      }
-
-      if (boid.position.distanceTo(other.position) < separation) {
-        v2 = v2.subtract(other.position.subtract(boid.position))
-      }
-
-      if (allowWrapping) {
-        continue
-      }
-
-      if (boid.position.x < 10) {
-        v2 = v2.subtract(new Vector(-10, 0))
-      } else if (boid.position.x > canvas.width - 10) {
-        v2 = v2.subtract(new Vector(10, 0))
-      }
-      if (boid.position.y < 10) {
-        v2 = v2.subtract(new Vector(0, -10))
-      } else if (boid.position.y > canvas.height - 10) {
-        v2 = v2.subtract(new Vector(0, 10))
-      }
-    }
-
-    // Rule 3: Boids try to match velocity with near boids
     let v3 = new Vector()
     for (const other of boids) {
       if (other === boid) {
         continue
       }
 
+      // Rule 2: Boids try to keep a small distance away from other objects (including other boids)
+      if (boid.position.distanceTo(other.position) < separation) {
+        v2 = v2.subtract(other.position.subtract(boid.position))
+      }
+
+      if (!allowWrapping) {
+        if (boid.position.x < 10) {
+          v2 = v2.subtract(new Vector(-10, 0))
+        } else if (boid.position.x > canvas.width - 10) {
+          v2 = v2.subtract(new Vector(10, 0))
+        }
+        if (boid.position.y < 10) {
+          v2 = v2.subtract(new Vector(0, -10))
+        } else if (boid.position.y > canvas.height - 10) {
+          v2 = v2.subtract(new Vector(0, 10))
+        }
+      }
+
+      // Rule 3: Boids try to match velocity with near boids
       v3 = v3.add(other.velocity.mult(alignment))
     }
+
     v3 = v3.div(Math.max(boids.length - 1, 1))
 
     const direction = Math.atan2(boid.velocity.y, boid.velocity.x)
