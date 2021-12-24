@@ -43,6 +43,7 @@ export const drawBoid = (boid: Boid) => {
   rotatePoint(rightTail, boid.position, direction)
 
   ctx.strokeStyle = 'white'
+  ctx.fillStyle = 'white'
   ctx.lineWidth = 2
   ctx.beginPath()
   ctx.moveTo(tip.x, tip.y)

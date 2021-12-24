@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "esbuild src/main.ts --sourcemap --outfile=dist/boids.js --bundle --watch",
+    "build": "esbuild src/main.ts --sourcemap --outfile=dist/boids.js --bundle",
     "server": "live-server --no-browser"
   },
   "keywords": [],
