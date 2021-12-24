@@ -41,8 +41,6 @@ function update(delta: number) {
 
 function render() {
   ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height)
-  ctx.strokeStyle = 'white'
-  ctx.fillStyle = 'white'
 
   for (const boid of boids) {
     drawBoid(boid)
