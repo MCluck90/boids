@@ -1,0 +1,19 @@
+{
+  "name": "boids",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "esbuild src/main.ts --sourcemap --outfile=dist/boids.js --bundle --watch",
+    "server": "live-server --no-browser"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "esbuild": "^0.14.8",
+    "live-server": "^1.2.1",
+    "prettier": "^2.5.1",
+    "typescript": "^4.5.4"
+  }
+}
