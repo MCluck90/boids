@@ -1,10 +1,11 @@
-export interface Vector2 {
+import { Vector } from './vector'
+
+export interface Point {
   x: number
   y: number
 }
 
 export interface Boid {
-  x: number
-  y: number
-  velocity: Vector2
+  position: Vector
+  velocity: Vector
 }

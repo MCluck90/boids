@@ -1,4 +1,4 @@
-import { createBoid } from './boids'
+import { createBoid, moveBoids } from './boids'
 import { ctx, drawBoid, canvas } from './canvas'
 import { Boid } from './types'
 
@@ -14,20 +14,21 @@ const boids: Boid[] = [
 
 function update(delta: number) {
   const speed = Number(speedEl.value)
-  for (const boid of boids) {
-    boid.x += boid.velocity.x * delta * speed
-    boid.y += boid.velocity.y * delta * speed
 
-    if (boid.x <= 0) {
-      boid.x = canvas.width + boid.x
-    } else if (boid.x >= canvas.width) {
-      boid.x -= canvas.width
+  moveBoids(boids, speed * delta)
+
+  // Wrap around the screen
+  for (const boid of boids) {
+    if (boid.position.x <= 0) {
+      boid.position.x = canvas.width + boid.position.x
+    } else if (boid.position.x >= canvas.width) {
+      boid.position.x -= canvas.width
     }
 
-    if (boid.y <= 0) {
-      boid.y = canvas.height + boid.y
-    } else if (boid.y >= canvas.height) {
-      boid.y -= canvas.height
+    if (boid.position.y <= 0) {
+      boid.position.y = canvas.height + boid.position.y
+    } else if (boid.position.y >= canvas.height) {
+      boid.position.y -= canvas.height
     }
   }
 }

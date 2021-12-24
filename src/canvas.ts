@@ -1,4 +1,4 @@
-import { Boid, Vector2 } from './types'
+import { Boid, Point } from './types'
 
 export const canvas = document.querySelector('canvas')!
 
@@ -9,7 +9,7 @@ canvas.height = canvas.getBoundingClientRect().height
 
 export const ctx = canvas.getContext('2d')!
 
-function rotatePoint(point: Vector2, center: Vector2, angle: number) {
+function rotatePoint(point: Point, center: Point, angle: number) {
   const sin = Math.sin(angle)
   const cos = Math.cos(angle)
 
@@ -27,20 +27,20 @@ export const drawBoid = (boid: Boid) => {
   const direction = Math.atan2(boid.velocity.y, boid.velocity.x)
   const length = 10
   const tip = {
-    x: boid.x + length,
-    y: boid.y,
+    x: boid.position.x + length,
+    y: boid.position.y,
   }
   const leftTail = {
-    x: boid.x - length / 2,
-    y: boid.y - length / 2,
+    x: boid.position.x - length / 2,
+    y: boid.position.y - length / 2,
   }
   const rightTail = {
-    x: boid.x - length / 2,
-    y: boid.y + length / 2,
+    x: boid.position.x - length / 2,
+    y: boid.position.y + length / 2,
   }
-  rotatePoint(tip, boid, direction)
-  rotatePoint(leftTail, boid, direction)
-  rotatePoint(rightTail, boid, direction)
+  rotatePoint(tip, boid.position, direction)
+  rotatePoint(leftTail, boid.position, direction)
+  rotatePoint(rightTail, boid.position, direction)
 
   ctx.beginPath()
   ctx.moveTo(tip.x, tip.y)
